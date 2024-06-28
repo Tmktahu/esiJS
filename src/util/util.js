@@ -220,9 +220,12 @@ function makeRequest({ subUrl, body, query, requestType = 'GET', needsAuth = fal
       return data;
     })
     .catch((error) => {
-      if (error.response) {
+      if (error.response !== undefined) {
         // if its a error from ESI
-        const esiError = `${error.response.data.error}${error.response.data.error_description}`;
+        let esiError = '';
+        if (error.response.data.error !== undefined) esiError += error.response.data.error;
+        if (error.response.data.error_description !== undefined) esiError += error.response.data.error_description;
+        if (esiError.length === 0) esiError = 'No ESI error returned.';
         const url = fullURL.split('&token')[0];
         throw buildError(esiError, `ESI_ERROR`, url);
       }
