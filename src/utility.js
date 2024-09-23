@@ -1,11 +1,12 @@
 const fs = require('fs')
-const { buildError, checkForConfig, log, getSettings } = require('./util/util.js')
-const {
-    projectConfig,
-    localConfig,
-    server,
-    routes
-} = require('./util/constants.js')
+// const { buildError, checkForConfig, log, getSettings } = require('./util/util.js')
+const { getSettings } = require('./util/util.js')
+// const {
+//     projectConfig,
+//     localConfig,
+//     server,
+//     routes
+// } = require('./util/constants.js')
 
 module.exports = {
     /**
@@ -27,35 +28,37 @@ module.exports = {
         language = "en/us",
         projectName
     }) {
-        if (checkForConfig()) {
-            let currentSettings = this.getSettings()
+        // if (checkForConfig()) {
+        //     let currentSettings = this.getSettings()
 
-            // Check if settings are already set, and dont change if not needed
-            route = route || currentSettings.route
-            authToken = authToken || currentSettings.authToken
-            language = language || currentSettings.language
-            projectName = projectName || currentSettings.projectName
+        //     // Check if settings are already set, and dont change if not needed
+        //     route = route || currentSettings.route
+        //     authToken = authToken || currentSettings.authToken
+        //     language = language || currentSettings.language
+        //     projectName = projectName || currentSettings.projectName
 
 
-            if (!route || !routes.includes(route)) {
-                throw buildError(`setSettings needs its "route" argument to be one of these: ${routes}`)
-            }
-            route = `https://${server}/${route}/`
-            try {
-                const newConfig = JSON.stringify({
-                    projectName: projectName,
-                    link: route,
-                    authToken,
-                    language
-                }, null, 2)
-                fs.writeFileSync(projectConfig, newConfig)
-                log(`Sucessfully updated config!\nNew config:\n${newConfig}`, 'INFO')
-            } catch (e) {
-                throw buildError(`Couldn't write config file! Error:\n${e}`)
-            }
-            return true
-        }
-        throw buildError(`If you are seeing this error, 2 + 2 is not equal to 4 and your life is a lie.`, 'THIS_SHOULDNT_EVER_HAPPEN')
+        //     if (!route || !routes.includes(route)) {
+        //         throw buildError(`setSettings needs its "route" argument to be one of these: ${routes}`)
+        //     }
+        //     route = `https://${server}/${route}/`
+        //     try {
+        //         const newConfig = JSON.stringify({
+        //             projectName: projectName,
+        //             link: route,
+        //             authToken,
+        //             language
+        //         }, null, 2)
+        //         fs.writeFileSync(projectConfig, newConfig)
+        //         log(`Sucessfully updated config!\nNew config:\n${newConfig}`, 'INFO')
+        //     } catch (e) {
+        //         throw buildError(`Couldn't write config file! Error:\n${e}`)
+        //     }
+        //     return true
+        // }
+        // throw buildError(`If you are seeing this error, 2 + 2 is not equal to 4 and your life is a lie.`, 'THIS_SHOULDNT_EVER_HAPPEN')
+
+        return true;
     },
     /**
      * Pause execution of code for a specified amount of time.

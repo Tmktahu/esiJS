@@ -44,15 +44,22 @@ const cache = new Cache();
 
 // documented in utility.js
 function getSettings() {
-  let settings;
-  if (checkForConfig()) {
-    settings = fs.readFileSync(projectConfig, 'utf8');
-    return JSON.parse(settings);
-  } else {
-    log(`No project config file! Attempting to revert to default configuration...`, 'WARN');
-    settings = fs.readFileSync(localConfig, 'utf8');
+  // let settings;
+  // if (checkForConfig()) {
+  //   settings = fs.readFileSync(projectConfig, 'utf8');
+  //   return JSON.parse(settings);
+  // } else {
+  //   log(`No project config file! Attempting to revert to default configuration...`, 'WARN');
+  //   settings = fs.readFileSync(localConfig, 'utf8');
+  // }
+  // return JSON.parse(settings);
+
+  return {
+    "projectName": "",
+    "link": "https://esi.evetech.net/latest/",
+    "authToken": "",
+    "language": "en/us"
   }
-  return JSON.parse(settings);
 }
 /**
  * @private
@@ -233,60 +240,60 @@ function makeRequest({ subUrl, body, query, requestType = 'GET', needsAuth = fal
       throw buildError(error, 'ESIJS_ERROR');
     });
 }
-function checkForConfig(logging) {
-  let localLog = log;
-  // Check for a ESI config file in the project directory
-  if (!logging) {
-    localLog = () => {};
-  }
-  try {
-    let fileExists = fs.existsSync(projectConfig);
+// function checkForConfig(logging) {
+//   let localLog = log;
+//   // Check for a ESI config file in the project directory
+//   if (!logging) {
+//     localLog = () => {};
+//   }
+//   try {
+//     let fileExists = fs.existsSync(projectConfig);
 
-    // If the file exists...
-    if (fileExists) {
-      // ...see if we can read it...
-      try {
-        fs.accessSync(projectConfig, fs.constants.R_OK);
+//     // If the file exists...
+//     if (fileExists) {
+//       // ...see if we can read it...
+//       try {
+//         fs.accessSync(projectConfig, fs.constants.R_OK);
 
-        // ...then see if we can write into it
-        try {
-          fs.accessSync(projectConfig, fs.constants.W_OK);
-          // eslint-disable-next-line no-unused-vars
-        } catch (e) {
-          localLog(`Couldn't write to 'esi.json', reverting to default configuration`, 'WARNING');
-          return false;
-        }
-        // eslint-disable-next-line no-unused-vars
-      } catch (e) {
-        localLog(`Couldn't read config file, reverting to default configuration`, 'WARNING');
-        return false;
-      }
-    } else {
-      // If the file doesn't exist...
-      localLog(`The config file doesn't exist! Reverting to default configuration and attempting to write to "${projectConfig}"...`, 'INFO');
-      try {
-        // ...attempt to create it
-        fs.writeFileSync(projectConfig, JSON.stringify(require(localConfig), null, 2));
-        localLog(`Sucessfully created config file in ${projectPath}!`, 'INFO');
-      } catch (e) {
-        throw buildError(`There was a error while attempting to create the config file! Error: \n${e}`);
-      }
-      return false;
-    }
-    // eslint-disable-next-line no-unused-vars
-  } catch (e) {
-    return false;
-  }
-  localLog(`I can read the config file!`, 'INFO');
-  return true;
-}
+//         // ...then see if we can write into it
+//         try {
+//           fs.accessSync(projectConfig, fs.constants.W_OK);
+//           // eslint-disable-next-line no-unused-vars
+//         } catch (e) {
+//           localLog(`Couldn't write to 'esi.json', reverting to default configuration`, 'WARNING');
+//           return false;
+//         }
+//         // eslint-disable-next-line no-unused-vars
+//       } catch (e) {
+//         localLog(`Couldn't read config file, reverting to default configuration`, 'WARNING');
+//         return false;
+//       }
+//     } else {
+//       // If the file doesn't exist...
+//       localLog(`The config file doesn't exist! Reverting to default configuration and attempting to write to "${projectConfig}"...`, 'INFO');
+//       try {
+//         // ...attempt to create it
+//         fs.writeFileSync(projectConfig, JSON.stringify(require(localConfig), null, 2));
+//         localLog(`Sucessfully created config file in ${projectPath}!`, 'INFO');
+//       } catch (e) {
+//         throw buildError(`There was a error while attempting to create the config file! Error: \n${e}`);
+//       }
+//       return false;
+//     }
+//     // eslint-disable-next-line no-unused-vars
+//   } catch (e) {
+//     return false;
+//   }
+//   localLog(`I can read the config file!`, 'INFO');
+//   return true;
+// }
 
 module.exports = {
   log,
   request: makeRequest,
   inputValidation,
   buildError,
-  checkForConfig,
+  // checkForConfig,
   getSettings,
   cache,
 };

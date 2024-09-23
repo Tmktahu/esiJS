@@ -28,71 +28,56 @@ const esiJS = class {
         /**
          * Checks for a config file in 'projectPath'. If it exists, it checks if it can read and write to the file. If not, it creates one.
          */
-        const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
-        let path;
+        // const projectConfig = path.normalize(path.join(__dirname, '../../esi.json'))
+        // const projectPath = path.normalize(path.join(__dirname, `../../`))
+        // // Check for a ESI config file in the project directory
+        // try {
+        //     log(`Checking for a config file in ${projectPath}...`, 'INFO')
+        //     let fileExists = fs.existsSync(projectConfig)
 
-        if (isNode) {
-            path = require('path');
-        }
+        //     // If the file exists...
+        //     if (fileExists) {
 
-        const baseDir = isNode ? process.cwd() : ''; // Use process.cwd() for Node.js, empty string for browser
+        //         // ...see if we can read it...
+        //         try {
+        //             log(`Config file exists! Checking if I can read it...`, 'INFO')
+        //             fs.accessSync(projectConfig, fs.constants.R_OK)
 
-        const projectConfig = isNode 
-            ? path.normalize(path.join(baseDir, '../../esi.json')) 
-            : '/esi.json'; // Relative path for browser
+        //             // ...then see if we can write into it
+        //             try {
+        //                 log(`I can read it! Checking if I can write into it...`, 'INFO')
+        //                 fs.accessSync(projectConfig, fs.constants.W_OK)
+        //             } catch (e) {
+        //                 log(`Couldn't write to 'esi.json', reverting to default configuration`, 'WARNING')
+        //                 return false
+        //             }
+        //         } catch (e) {
+        //             log(`Couldn't read config file, reverting to default configuration`, 'WARNING')
+        //             return false
+        //         }
 
-        const projectPath = isNode 
-            ? path.normalize(path.join(baseDir, '../../')) 
-            : '/'; // Root path or adjust as needed for browser
-            
-        // Check for a ESI config file in the project directory
-        try {
-            log(`Checking for a config file in ${projectPath}...`, 'INFO')
-            let fileExists = fs.existsSync(projectConfig)
+        //     } else {
+        //         // If the file doesn't exist...
+        //         log(`The config file doesn't exist! Reverting to default configuration and attempting to write to ${projectConfig}...`, 'INFO')
+        //         try {
+        //             // ...attempt to create it
+        //             fs.writeFileSync(projectConfig, JSON.stringify(require('./esi.json'), null, 2))
+        //             log(`Sucessfully created config file in ${projectPath}!`, 'INFO')
+        //         } catch (e) {
+        //             throw buildError(`There was a error while attempting to create the config file! Error: \n${e}`)
+        //         }
+        //         return false
+        //     }
 
-            // If the file exists...
-            if (fileExists) {
-
-                // ...see if we can read it...
-                try {
-                    log(`Config file exists! Checking if I can read it...`, 'INFO')
-                    fs.accessSync(projectConfig, fs.constants.R_OK)
-
-                    // ...then see if we can write into it
-                    try {
-                        log(`I can read it! Checking if I can write into it...`, 'INFO')
-                        fs.accessSync(projectConfig, fs.constants.W_OK)
-                    } catch (e) {
-                        log(`Couldn't write to 'esi.json', reverting to default configuration`, 'WARNING')
-                        return false
-                    }
-                } catch (e) {
-                    log(`Couldn't read config file, reverting to default configuration`, 'WARNING')
-                    return false
-                }
-
-            } else {
-                // If the file doesn't exist...
-                log(`The config file doesn't exist! Reverting to default configuration and attempting to write to ${projectConfig}...`, 'INFO')
-                try {
-                    // ...attempt to create it
-                    fs.writeFileSync(projectConfig, JSON.stringify(require('./esi.json'), null, 2))
-                    log(`Sucessfully created config file in ${projectPath}!`, 'INFO')
-                } catch (e) {
-                    throw buildError(`There was a error while attempting to create the config file! Error: \n${e}`)
-                }
-                return false
-            }
-
-        } catch (e) {
-            return
-        }
-        log(`I can read and write to the config file!`, 'INFO')
-        if (token) {
-            this.util.setSettings({
-                authToken: token
-            })
-        }
+        // } catch (e) {
+        //     return
+        // }
+        // log(`I can read and write to the config file!`, 'INFO')
+        // if (token) {
+        //     this.util.setSettings({
+        //         authToken: token
+        //     })
+        // }
     }
     alliance = require('./src/alliance')
     character = require('./src/character')
