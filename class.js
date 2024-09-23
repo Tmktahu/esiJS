@@ -28,8 +28,23 @@ const esiJS = class {
         /**
          * Checks for a config file in 'projectPath'. If it exists, it checks if it can read and write to the file. If not, it creates one.
          */
-        const projectConfig = path.normalize(path.join(__dirname, '../../esi.json'))
-        const projectPath = path.normalize(path.join(__dirname, `../../`))
+        const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+        let path;
+
+        if (isNode) {
+            path = require('path');
+        }
+
+        const baseDir = isNode ? process.cwd() : ''; // Use process.cwd() for Node.js, empty string for browser
+
+        const projectConfig = isNode 
+            ? path.normalize(path.join(baseDir, '../../esi.json')) 
+            : '/esi.json'; // Relative path for browser
+
+        const projectPath = isNode 
+            ? path.normalize(path.join(baseDir, '../../')) 
+            : '/'; // Root path or adjust as needed for browser
+            
         // Check for a ESI config file in the project directory
         try {
             log(`Checking for a config file in ${projectPath}...`, 'INFO')
