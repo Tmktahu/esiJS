@@ -2,7 +2,6 @@ const chalk = require('chalk');
 const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
-const { URLSearchParams } = require('node:url');
 const { projectPath, projectConfig, localConfig } = require('./constants');
 const { version } = require('../../package.json');
 const DEFAULT_USER_AGENT = `esiJS-v${version}`;
