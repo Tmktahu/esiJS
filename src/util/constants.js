@@ -1,16 +1,16 @@
 const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
-let path, __dirname;
+let path;
 
 if (isNode) {
-    // Only require 'path' and use __dirname in Node.js
     path = require('path');
-    __dirname = __dirname || process.cwd();
 }
 
+const baseDir = isNode ? process.cwd() : ''; // Use process.cwd() in Node.js, empty string for browser
+
 module.exports = {
-    localConfig: isNode ? path.join(__dirname, `../../esi.json`) : '/esi.json', // Browser uses relative URL
-    projectConfig: isNode ? path.join(__dirname, '../../../esi.json') : '/esi.json', // Adjust for browser
-    projectPath: isNode ? path.join(__dirname, `../../../../`) : '/', // Root or relative path for browser
+    localConfig: isNode ? path.join(baseDir, 'esi.json') : '/esi.json', // Adjust paths accordingly
+    projectConfig: isNode ? path.join(baseDir, 'esi.json') : '/esi.json',
+    projectPath: isNode ? path.join(baseDir, '../../') : '/', // Adjust for browser
     routes: ['latest', 'v1', 'legacy', 'dev'],
     server: 'esi.evetech.net'
 };
